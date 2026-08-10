@@ -80,7 +80,14 @@ export function Document({
   );
 
   return (
-    <ThemeProvider theme={theme} setTheme={setTheme} renderers={renderers} {...links} top={top}>
+    <ThemeProvider
+      theme={theme}
+      setTheme={setTheme}
+      renderers={renderers}
+      {...links}
+      top={top}
+      staticBuild={staticBuild}
+    >
       <DocumentWithoutProviders
         children={children}
         scripts={scripts}
@@ -142,7 +149,7 @@ export function DocumentWithoutProviders({
         />
         {head}
       </head>
-      <body className="m-0 transition-colors duration-500 bg-white dark:bg-stone-900">
+      <body className="m-0 bg-myst-bg">
         <BaseUrlProvider baseurl={baseurl}>
           <SiteProvider config={config}>{children}</SiteProvider>
         </BaseUrlProvider>

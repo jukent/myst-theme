@@ -87,6 +87,18 @@ The {smallcaps}`HTML` specification defines web standards.
 
 {button}`Click Me! <https://mystmd.org>`
 
+Button inline {button}`Click Me! <https://mystmd.org>`.
+
+Long paragraph of text with a button after at least one line break has happened.
+Long paragraph of text with a button after at least one line break has happened.
+Button inline {button}`Click Me! <https://mystmd.org>`.
+Long paragraph of text with a button after at least one line break has happened.
+Long paragraph of text with a button after at least one line break has happened.
+
+Lots of horizontally stacked buttons to show how they spill onto lines.
+
+{button}`Button one <https://example.com>` {button}`Button two with really long text <https://example.com>` {button}`Button three with really long text <https://example.com>` {button}`Button four <https://example.com>` {button}`Button five <https://example.com>`
+
 (math)=
 
 ## Math
@@ -106,7 +118,13 @@ $$
 $$
 
 $$
-\frac{d}{dx} \left( \int_{0}^{x} f(u) du \right) = f(x)
+\begin{align*}
+P(\text{Third Year} ~\Big\vert~ \text{Declared}) 
+~ &=~ \frac{ 0.4 \times 0.8}{0.6 \times 0.5 ~+~ 0.4 \times  0.8} \\ \\
+&=~ \frac{\text{(prior probability of Third Year)} \times
+\text{(likelihood of Declared given Third Year)}}
+{\text{total probability of Declared}}
+\end{align*}
 $$
 
 ## Special Characters

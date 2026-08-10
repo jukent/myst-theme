@@ -1,5 +1,6 @@
 import {
   json,
+  redirect,
   type V2_MetaFunction,
   type LinksFunction,
   type LoaderFunction,
@@ -15,7 +16,7 @@ import {
   ErrorDocumentNotFound,
   ErrorUnhandled,
 } from '@myst-theme/site';
-import { getConfig, getPage } from '~/utils/loaders.server';
+import { getConfig, getPage, getStaticFileUrl } from '~/utils/loaders.server';
 import { useLoaderData } from '@remix-run/react';
 import type { SiteManifest } from 'myst-config';
 import {
@@ -63,19 +64,29 @@ export const meta: V2_MetaFunction<typeof loader> = ({ data, matches, location }
 export const links: LinksFunction = () => [KatexCSS];
 
 export const loader: LoaderFunction = async ({ params, request }) => {
-  const [first, ...rest] = parsePathname(new URL(request.url).pathname);
+  const url = new URL(request.url);
+  const [first, ...rest] = parsePathname(url.pathname);
   const config = await getConfig();
   const project = getProject(config, first);
   const projectName = project?.slug === first ? first : undefined;
   const slugParts = projectName ? rest : [first, ...rest];
   const slug = slugParts.length ? slugParts.join('.') : undefined;
   const flat = isFlatSite(config);
-  const page = await getPage(request, {
-    project: flat ? projectName : (projectName ?? slug),
-    slug: flat ? slug : projectName ? slug : undefined,
-    redirect: process.env.MODE === 'static' ? false : true,
-  });
-  return json({ config, page, project });
+  try {
+    const page = await getPage(request, {
+      project: flat ? projectName : (projectName ?? slug),
+      slug: flat ? slug : projectName ? slug : undefined,
+      // MODE=static is set by mystmd when pre-rendering pages for `myst build --html`; skip index redirects in that case.
+      redirect: process.env.MODE === 'static' ? false : true,
+    });
+    return json({ config, page, project });
+  } catch (e) {
+    if (e instanceof Response && e.status === 404) {
+      const cdnUrl = await getStaticFileUrl(url.pathname);
+      if (cdnUrl) throw redirect(cdnUrl);
+    }
+    throw e;
+  }
 };
 
 function ArticlePageAndNavigationInternal({
@@ -100,11 +111,16 @@ function ArticlePageAndNavigationInternal({
       <TabStateProvider>
         {projectParts?.banner && <Banner content={projectParts.banner.mdast} />}
       </TabStateProvider>
-      <TopNav hideToc={hide_toc} hideSearch={hideSearch} />
+      <TopNav
+        hideToc={hide_toc}
+        hideSearch={hideSearch}
+        navbarEnd={projectParts?.navbar_end?.mdast}
+      />
       <PrimaryNavigation
         sidebarRef={toc}
         hide_toc={hide_toc}
         footer={<SidebarFooter content={projectParts?.primary_sidebar_footer?.mdast} />}
+        navbarEnd={projectParts?.navbar_end?.mdast}
         projectSlug={projectSlug}
       />
       <TabStateProvider>

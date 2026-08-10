@@ -67,6 +67,8 @@ export function AnyWidgetRenderer({ node }: { node: AnyWidget }) {
           const shadowRoot = rootEl.shadowRoot ?? rootEl.attachShadow({ mode: 'open' });
           // Create node to render the widget
           widgetRoot = document.createElement('div');
+          widgetRoot.className = classNames('myst-anywidget', node.class);
+          widgetRoot.style.position = 'relative';
           shadowRoot.replaceChildren(widgetRoot);
         } else {
           widgetRoot = rootEl;
@@ -95,18 +97,18 @@ export function AnyWidgetRenderer({ node }: { node: AnyWidget }) {
 
   if (error) {
     return (
-      <details className="p-3 bg-gray-100 rounded border border-gray-300 cursor-pointer">
-        <summary className="text-sm text-gray-600 select-none">
+      <details className="p-3 bg-myst-surface rounded border border-myst-border-strong cursor-pointer">
+        <summary className="text-sm text-myst-text-secondary select-none">
           Failed to load <code className="text-xs">anywidget</code> module.
         </summary>
-        <div className="pt-2 mt-2 space-y-1 text-xs border-t border-gray-200">
-          <div className="text-gray-500">
+        <div className="pt-2 mt-2 space-y-1 text-xs border-t border-myst-border">
+          <div className="text-myst-text-tertiary">
             <span className="font-medium">Widget Module URL:</span> {esmModuleUrl}
           </div>
-          <div className="text-gray-700">
+          <div className="text-myst-text-secondary">
             <span className="font-medium">Error:</span> {error.message}
           </div>
-          <div className="text-gray-700">
+          <div className="text-myst-text-secondary">
             <span className="font-medium">Stack:</span> {error.stack}
           </div>
         </div>
@@ -116,20 +118,20 @@ export function AnyWidgetRenderer({ node }: { node: AnyWidget }) {
 
   if (!isESMModuleUrlValid || !validModel) {
     return (
-      <div className="p-3 space-y-2 rounded-md border border-red-500">
+      <div className="p-3 space-y-2 rounded-md border border-myst-error">
         <div>
           Invalid <code>anywidget</code> directive.
         </div>
         {!isESMModuleUrlValid && (
           <div className="px-1">
             <div>Invalid import URL</div>
-            <div className="text-sm text-gray-500">{node.esm}</div>
+            <div className="text-sm text-myst-text-tertiary">{node.esm}</div>
           </div>
         )}
         {!validModel && (
           <div className="px-1">
             <div>Invalid JSON data</div>
-            <div className="text-sm text-gray-500">{(node.model as any)?.toString()}</div>
+            <div className="text-sm text-myst-text-tertiary">{(node.model as any)?.toString()}</div>
           </div>
         )}
       </div>

@@ -194,7 +194,7 @@ function GithubIssuePreview({
   });
   const iconClassName = 'inline-block mr-2 -translate-y-px h-6 w-6';
   // Define the icon element we'll render based on the issue's state
-  let stateIcon: JSX.Element | null = null;
+  let stateIcon: React.JSX.Element | null = null;
   if (isPullRequest) {
     // If it's a PR we choose between open, merged, not merged
     if (isOpen) {
@@ -234,14 +234,14 @@ function GithubIssuePreview({
   }
   return (
     <div className="hover-document article w-[400px] sm:max-w-[400px] p-3">
-      <div className="text-xs font-light">
+      <div className="text-xs font-light text-myst-text-tertiary">
         {org}/{repo}
       </div>
-      <div className="my-2 text-lg font-bold dark:text-white">
+      <div className="my-2 text-lg font-bold text-myst-text">
         {stateIcon}
         {issueData.title}
       </div>
-      <div className="text-xs font-light">
+      <div className="text-xs font-light text-myst-text-tertiary">
         #{issue_number} opened on {dateString} by{' '}
         <span className="font-normal">@{issueData.user.login}</span>
       </div>

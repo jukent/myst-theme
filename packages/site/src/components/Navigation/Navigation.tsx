@@ -3,6 +3,7 @@ import { PrimarySidebar } from './PrimarySidebar.js';
 import type { Heading } from '@myst-theme/common';
 import { getProjectHeadings } from '@myst-theme/common';
 import type { SiteManifest } from 'myst-config';
+import type { GenericParent } from 'myst-common';
 
 /**
  * PrimaryNavigation will load nav links and headers from the site manifest and display
@@ -15,13 +16,15 @@ export const PrimaryNavigation = ({
   hide_toc,
   mobileOnly,
   footer,
+  navbarEnd,
 }: {
   children?: React.ReactNode;
   projectSlug?: string;
-  sidebarRef?: React.RefObject<HTMLDivElement>;
+  sidebarRef?: React.RefObject<HTMLDivElement | null>;
   hide_toc?: boolean;
   mobileOnly?: boolean;
   footer?: React.ReactNode;
+  navbarEnd?: GenericParent;
 }) => {
   const config = useSiteManifest();
   if (!config) return null;
@@ -41,6 +44,7 @@ export const PrimaryNavigation = ({
       nav={nav}
       headings={headings}
       footer={footer}
+      navbarEnd={navbarEnd}
     />
   );
 };
@@ -63,14 +67,16 @@ export const ConfigurablePrimaryNavigation = ({
   nav,
   headings,
   footer,
+  navbarEnd,
 }: {
   children?: React.ReactNode;
-  sidebarRef?: React.RefObject<HTMLDivElement>;
+  sidebarRef?: React.RefObject<HTMLDivElement | null>;
   hide_toc?: boolean;
   mobileOnly?: boolean;
   nav?: SiteManifest['nav'];
   headings?: Heading[];
   footer?: React.ReactNode;
+  navbarEnd?: GenericParent;
 }) => {
   const [open, setOpen] = useNavOpen();
   const top = useThemeTop();
@@ -107,6 +113,7 @@ export const ConfigurablePrimaryNavigation = ({
         nav={nav}
         headings={headings}
         footer={footer}
+        navbarEnd={navbarEnd}
         hide_toc={hide_toc}
         mobileOnly={mobileOnly}
       />

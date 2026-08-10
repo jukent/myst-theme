@@ -125,7 +125,8 @@ function useSelectNodes({ load, identifier }: { load?: boolean; identifier: stri
   const parts = data ? data.frontmatter?.parts : frontmatter?.parts;
   let nodes: GenericNode[] = [];
   let htmlId: string | undefined;
-  [{ mdast }, ...Object.values(parts ?? {})].forEach(({ mdast: tree }) => {
+  const mdastParts = Object.values(parts ?? {}) as { mdast: any }[];
+  [{ mdast }, ...mdastParts].forEach(({ mdast: tree }) => {
     if (!tree || nodes.length > 0) return;
     const selected = selectMdastNodes(tree, identifier, 3);
     nodes = selected.nodes;
@@ -174,10 +175,10 @@ export function CrossReferenceHover({
         <XRefProvider remote={remote} remoteBaseUrl={remoteBaseUrl} url={url} dataUrl={dataUrl}>
           <div className="hover-document article w-[500px] sm:max-w-[500px] overflow-auto">
             {remoteBaseUrl && (
-              <div className="px-3 py-1 w-full text-xs bg-gray-50 border-b">
-                <strong className="text-gray-700">Source: </strong>
+              <div className="px-3 py-1 w-full text-xs bg-myst-bg-secondary border-b">
+                <strong className="text-myst-text-secondary">Source: </strong>
                 <a
-                  className={classNames('text-gray-700', className)}
+                  className={classNames('text-myst-text-secondary', className)}
                   href={`${createRemoteBaseUrl(url, remoteBaseUrl)}${htmlId ? `#${htmlId}` : ''}`}
                   target="_blank"
                 >

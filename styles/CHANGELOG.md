@@ -1,5 +1,31 @@
 # @myst-theme/styles
 
+## 1.3.1
+
+### Patch Changes
+
+- e9aee3a: Fix vertical height for stacked buttons
+
+## 1.3.0
+
+### Patch Changes
+
+- 3aaa57d: Add full-color support to the ANSI renderers
+
+## 1.2.2
+
+## 1.2.1
+
+### Patch Changes
+
+- c7164c8: Add restricted ANSI palette by default
+
+## 1.2.0
+
+### Minor Changes
+
+- 9ecc788: Add grid-item renderer
+
 ## 1.1.4
 
 ## 1.1.3
